@@ -45,10 +45,6 @@
         <include name="IDR_BRAVE_WALLET_TREZOR_BRIDGE_HTML" file="../brave_wallet_ui/trezor/trezor.html" type="BINDATA" />
       </if>
 
-      <!-- WebUI swap page resources for Android -->
-      <if expr="is_android">
-        <include name="IDR_BRAVE_WALLET_SWAP_PAGE_HTML" file="../brave_wallet_ui/page/screens/swap/android/swap.html" type="BINDATA" />
-      </if>
       <!-- WebUI vpn resources -->
       <if expr="not is_android">
         <if expr="enable_brave_vpn">
@@ -58,7 +54,13 @@
 
       <!-- Imagery links -->
       <if expr="not is_android">
-        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/backgrounds/dylan-malval_sea-min.webp" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/backgrounds/ekrem-osmanoglu-2R0gbZXaUqM-unsplash.webp" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND2" file="../img/newtab/backgrounds/ayse-bek-YLdYVzHopto-unsplash.webp" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND3" file="../img/newtab/backgrounds/fatih-yurur-kNSREmtaGOE-unsplash.webp" type="BINDATA" />
+
+        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND4" file="../img/newtab/backgrounds/fahrul-azmi-gyKmF0vnfBs-unsplash.webp" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND5" file="../img/newtab/backgrounds/dhru-j-r7H8kkoYyCY-unsplash.webp" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND6" file="../img/newtab/backgrounds/abdurahman-iseini-DNwQ35LdxXQ-unsplash.webp" type="BINDATA" />
       </if>
 
       <!-- WebUI private new tab resources -->
@@ -67,7 +69,6 @@
       <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />
 
       <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
-      <part file="../commands/browser/resources/commands_resources.grdp" />
       <part file="../playlist/browser/resources/playlist_resources.grdp" />
       <part file="brave_blank_page_resources.grdp" />
       <part file="brave_translate_resources.grdp" />

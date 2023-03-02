@@ -515,7 +515,7 @@
 <translation id="6518133107902771759">확인</translation>
 <translation id="422369484771082705">검증 여부는 자유 선택입니다. 하지만 검증을 마치면 Brave Rewards에 적립된 BAT를 보호관리 월렛으로 바로 인출할 수 있습니다.</translation>
 <translation id="4354564238172327160">Brave 콘텐츠 제작자가 되세요!</translation>
-<translation id="4639659520811817892">지금 creators.brave.com을 방문하여 등록하고 팬과 팔로워로부터 BAT를 받아 수익을 창출하세요.</translation>
+<translation id="4639659520811817892">지금 creators.tomi.com을 방문하여 등록하고 팬과 팔로워로부터 BAT를 받아 수익을 창출하세요.</translation>
 <translation id="4816455138209470435">Brave는 YouTube, Twitch, Vimeo 등 많은 서비스를 지원합니다!</translation>
 <translation id="3656941797339037856">Rewards를 Gemini에 연결하세요!</translation>
 <translation id="2888702144235098855">BAT 등 50여 종의 암호화폐를 거래합니다. 암호화폐를 보관할 수 있는 안전한 플랫폼입니다.</translation>
@@ -1466,8 +1466,8 @@
 <translation id="4029551149873989025">네트워크 전환</translation>
 <translation id="7561262633951061138">최고</translation>
 <translation id="3143110700666266545">이 앱은 다음 제3자 API를 사용합니다.</translation>
-<translation id="8411419545176806786">Brave 스왑은 지원되는 EVM 네트워크에 DEX 애그리게이터로 0x를 사용합니다. 0x는 이더리움 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). 0x는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
-<translation id="7467728126359974661">Brave 스왑은 Solana 네트워크에 DEX 애그리게이터로 Jupiter를 사용합니다. Jupiter는 Solana 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). Jupiter는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
+<translation id="8411419545176806786">Brave Swap은 지원되는 EVM 네트워크에 DEX 애그리게이터로 0x를 사용합니다. 0x는 이더리움 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). 0x는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
+<translation id="7467728126359974661">Brave Swap은 Solana 네트워크에 DEX 애그리게이터로 Jupiter를 사용합니다. Jupiter는 Solana 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). Jupiter는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
 <translation id="8497751359931572880">0x 개인정보 보호정책을 보려면 여기를 클릭하세요.</translation>
 <translation id="4904748904130272182">Jupiter 개인정보 보호정책을 보려면 여기를 클릭하세요.</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
