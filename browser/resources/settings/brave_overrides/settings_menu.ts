@@ -5,12 +5,10 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
+import { html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { RegisterStyleOverride, RegisterPolymerTemplateModifications } from 'chrome://resources/polymer_overriding.js'
+import { loadTimeData } from '../i18n_setup.js'
 import '../brave_icons.html.js'
-
-import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-
-import {loadTimeData} from '../i18n_setup.js'
 
 function createMenuElement(title, href, iconName, pageVisibilitySection) {
   const menuEl = document.createElement('a')
@@ -223,13 +221,6 @@ RegisterPolymerTemplateModifications({
     } else {
       menuEl.insertAdjacentElement('afterbegin', titleEl)
     }
-
-    // Hide performance menu. We moved it under system menu instead.
-    const performanceEl = getMenuElement(templateContent, '/performance')
-    if (performanceEl) {
-      performanceEl.remove()
-    }
-
     // Add 'Get Started' item
     const peopleEl = getMenuElement(templateContent, '/people')
     const getStartedEl = createMenuElement(
@@ -262,7 +253,7 @@ RegisterPolymerTemplateModifications({
     // Add Rewards item
     const isBraveRewardsSupported = loadTimeData.getBoolean('isBraveRewardsSupported')
     let rewardsEl = undefined
-    if (isBraveRewardsSupported) {
+    if (isBraveRewardsSupported && false) {
       rewardsEl = createMenuElement(
         loadTimeData.getString('braveRewards'),
         '/rewards',
@@ -278,11 +269,10 @@ RegisterPolymerTemplateModifications({
       'brave_settings:social-permissions',
       'socialBlocking',
     )
-    if (isBraveRewardsSupported) {
-      rewardsEl.insertAdjacentElement('afterend', embedEl)
-    } else {
-      shieldsEl.insertAdjacentElement('afterend', embedEl)
-    }
+
+
+    shieldsEl.insertAdjacentElement('afterend', embedEl)
+
     // Add privacy
     const privacyEl = getMenuElement(templateContent, '/privacy')
     embedEl.insertAdjacentElement('afterend', privacyEl)
@@ -307,14 +297,6 @@ RegisterPolymerTemplateModifications({
     searchEl.insertAdjacentElement('afterend', extensionEl)
 
 
-    const web3El = createMenuElement(
-      loadTimeData.getString('braveWeb3'),
-      '/web3',
-      'brave_settings:wallet',
-      'wallet',
-    )
-
-    extensionEl.insertAdjacentElement('afterend', web3El)
 
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')

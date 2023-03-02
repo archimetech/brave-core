@@ -168,9 +168,13 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
                              IDC_NEW_TOR_CONNECTION_FOR_SITE,
                              IDS_NEW_TOR_CONNECTION_FOR_SITE);
   }
-  if (IsCommandIdEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR)) {
+  //InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW).value()+1,
+                        //     0,
+                          //   IDS_TOOL_TIP_TOMI_NET);
+ bool skip = false;
+  if (IsCommandIdEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR) && skip) {
     InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW).value() + 1,
+        GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW).value() + 2,
         IDC_NEW_OFFTHERECORD_WINDOW_TOR, IDS_NEW_OFFTHERECORD_WINDOW_TOR);
   }
 
@@ -204,17 +208,6 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
         IDC_MANAGE_EXTENSIONS, IDS_SHOW_EXTENSIONS);
   }
 
-  if (IsCommandIdEnabled(IDC_SHOW_BRAVE_REWARDS)) {
-    InsertItemWithStringIdAt(GetIndexOfBraveRewardsItem(),
-                             IDC_SHOW_BRAVE_REWARDS, IDS_SHOW_BRAVE_REWARDS);
-  }
-
-  // Insert wallet menu after download menu.
-  if (IsCommandIdEnabled(IDC_SHOW_BRAVE_WALLET)) {
-    InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value() + 1,
-        IDC_SHOW_BRAVE_WALLET, IDS_SHOW_BRAVE_WALLET);
-  }
 
   // Insert sync menu
   if (IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)) {

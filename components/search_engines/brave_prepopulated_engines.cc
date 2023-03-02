@@ -48,7 +48,7 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
         {PREPOPULATED_ENGINE_ID_QWANT, &qwant},
         {PREPOPULATED_ENGINE_ID_STARTPAGE, &startpage},
         {PREPOPULATED_ENGINE_ID_ECOSIA, &brave_ecosia},
-        {PREPOPULATED_ENGINE_ID_BRAVE, &brave_search},
+        {PREPOPULATED_ENGINE_ID_BRAVE, &google},
 };
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
@@ -198,12 +198,12 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
 const PrepopulatedEngine brave_search_tor = ModifyEngineParams(
     brave_search,
     nullptr,
-    L":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion",
+    L":google.com",
     "https://"
-    "search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/"
+    ":google.com"
     "search?q={searchTerms}",
     "https://"
-    "search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/api/"
+    ":google.com"
     "suggest?q={searchTerms}",
     nullptr,
     PREPOPULATED_ENGINE_ID_BRAVE_TOR);

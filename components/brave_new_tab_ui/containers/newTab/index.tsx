@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -13,12 +13,11 @@ import {
   BraveTalkWidget as BraveTalk, Clock, EditCards, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
-import BraveNews, { GetDisplayAdContent } from '../../components/default/braveNews'
+import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
 import FooterInfo from '../../components/default/footer/footer'
 import * as Page from '../../components/default/page'
 import TopSitesGrid from './gridSites'
 import SiteRemovalNotification from './notification'
-import Stats from './stats'
 
 // Helpers
 import isReadableOnBackground from '../../helpers/colorUtil'
@@ -27,21 +26,20 @@ import VisibilityTimer from '../../helpers/visibilityTimer'
 // Types
 import { getLocale } from '../../../common/locale'
 import { NewTabActions } from '../../constants/new_tab_types'
-import { BraveNewsState } from '../../reducers/today'
-import * as mojom from '../../../brave_rewards/resources/shared/lib/mojom'
+import { BraveTodayState } from '../../reducers/today'
 
 // NTP features
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import Settings, { TabType as SettingsTabType } from './settings'
 
-import { BraveNewsContextProvider } from '../../components/default/braveNews/customize/Context'
-import BraveNewsHint from '../../components/default/braveNews/hint'
+import { BraveNewsContextProvider } from '../../components/default/braveToday/customize/Context'
+import BraveTodayHint from '../../components/default/braveToday/hint'
 import GridWidget from './gridWidget'
 
 interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
-  todayData: BraveNewsState
+  todayData: BraveTodayState
   actions: NewTabActions
   getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
@@ -62,7 +60,7 @@ interface State {
   targetTopSiteForEditing?: NewTab.Site
   backgroundHasLoaded: boolean
   activeSettingsTab: SettingsTabType | null
-  isPromptingBraveNews: boolean
+  isPromptingBraveToday: boolean
   showSearchPromotion: boolean
   forceToHideWidget: boolean
 }
@@ -119,14 +117,13 @@ class NewTabPage extends React.Component<Props, State> {
     showEditTopSite: false,
     backgroundHasLoaded: false,
     activeSettingsTab: null,
-    isPromptingBraveNews: false,
+    isPromptingBraveToday: false,
     showSearchPromotion: false,
     forceToHideWidget: false
   }
 
-  imgCache: HTMLImageElement
   braveNewsPromptTimerId: number
-  hasInitBraveNews: boolean = false
+  hasInitBraveToday: boolean = false
   imageSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
@@ -170,7 +167,6 @@ class NewTabPage extends React.Component<Props, State> {
     if (oldImageSource &&
       !newImageSource) {
       // reset loaded state
-      console.debug('reset image loaded state due to removing image source')
       this.setState({ backgroundHasLoaded: false })
     }
     if (!GetShouldShowBrandedWallpaperNotification(prevProps) &&
@@ -203,7 +199,7 @@ class NewTabPage extends React.Component<Props, State> {
           // a poor UX.
           return
         }
-        this.setState({ isPromptingBraveNews: true })
+        this.setState({ isPromptingBraveToday: true })
       }, 1700)
     }
   }
@@ -219,26 +215,19 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   trackCachedImage () {
-    console.debug('trackCachedImage')
     if (this.state.backgroundHasLoaded) {
-      console.debug('Resetting to new image')
       this.setState({ backgroundHasLoaded: false })
     }
     if (this.imageSource) {
       const imgCache = new Image()
-      // Store Image in class so it doesn't go out of scope
-      this.imgCache = imgCache
       imgCache.src = this.imageSource
-      console.debug('image start loading...')
-      imgCache.addEventListener('load', () => {
-        console.debug('image loaded')
+      console.timeStamp('image start loading...')
+      imgCache.onload = () => {
+        console.timeStamp('image loaded')
         this.setState({
           backgroundHasLoaded: true
         })
-      })
-      imgCache.addEventListener('error', (e) => {
-        console.debug('image error', e)
-      })
+      }
     }
   }
 
@@ -314,8 +303,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   startRewards = () => {
     const { rewardsState } = this.props.newTabData
-    if (!rewardsState.rewardsEnabled ||
-      rewardsState.externalWallet?.status === mojom.WalletStatus.kConnected) {
+    if (!rewardsState.rewardsEnabled) {
       chrome.braveRewards.openRewardsPanel()
     } else {
       chrome.braveRewards.enableAds()
@@ -566,17 +554,28 @@ class NewTabPage extends React.Component<Props, State> {
     if (showTopSites && !newTabData.customLinksEnabled) {
       showTopSites = this.props.gridSitesData.gridSites.length !== 0
     }
-
+    if(!showTopSites){
+        chrome.send('addNewTopSite',["https://www.brave.com",'Brave'])
+    }
     // Allow background customization if Super Referrals is not activated.
     const isSuperReferral = newTabData.brandedWallpaper && !newTabData.brandedWallpaper.isSponsored
     const allowBackgroundCustomization = !isSuperReferral
 
-    if (forceToHideWidget) {
-      showTopSites = false
+    if (forceToHideWidget || true)  {
+      showTopSites = true
       showStats = false
-      showClock = false
+      showClock = true
+      newTabData.showToday = false;
+      newTabData.braveTalkSupported = false;
+
       cryptoContent = null
     }
+    showTopSites = true
+    showStats = false
+    showClock = true
+    newTabData.showToday = false;
+    newTabData.braveTalkSupported = false;
+    cryptoContent = null
 
     const BraveNewsContext = newTabData.featureFlagBraveNewsV2Enabled
       ? BraveNewsContextProvider
@@ -589,7 +588,7 @@ class NewTabPage extends React.Component<Props, State> {
         imageSrc={this.imageSource}
         imageHasLoaded={this.state.backgroundHasLoaded}
         colorForBackground={colorForBackground}
-        data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews) ? true : undefined}>
+        data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveToday) ? true : undefined}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
         <BraveNewsContext>
         <Page.Page
@@ -604,15 +603,7 @@ class NewTabPage extends React.Component<Props, State> {
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
           {this.renderSearchPromotion()}
-          <GridWidget
-            pref='showStats'
-            container={Page.GridItemStats}
-            paddingType={'right'}
-            widgetTitle={getLocale('statsTitle')}
-            textDirection={newTabData.textDirection}
-            menuPosition={'right'}>
-            <Stats stats={newTabData.stats}/>
-          </GridWidget>
+
           <GridWidget
             pref='showClock'
             container={Page.GridItemClock}
@@ -675,13 +666,13 @@ class NewTabPage extends React.Component<Props, State> {
               </Page.FooterContent>
             </Page.Footer>
             {newTabData.showToday &&
-              <Page.GridItemNavigationBraveNews>
-                <BraveNewsHint />
-              </Page.GridItemNavigationBraveNews>
+              <Page.GridItemNavigationBraveToday>
+                <BraveTodayHint />
+              </Page.GridItemNavigationBraveToday>
             }
           </Page.Page>
         { newTabData.showToday && newTabData.featureFlagBraveNewsEnabled &&
-        <BraveNews
+        <BraveToday
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
           displayAdToScrollTo={this.props.todayData.displayAdToScrollTo}
@@ -689,12 +680,12 @@ class NewTabPage extends React.Component<Props, State> {
           publishers={this.props.todayData.publishers}
           isFetching={this.props.todayData.isFetching === true}
           hasInteracted={this.props.todayData.hasInteracted}
-          isPrompting={this.state.isPromptingBraveNews}
+          isPrompting={this.state.isPromptingBraveToday}
           isUpdateAvailable={this.props.todayData.isUpdateAvailable}
           onRefresh={this.props.actions.today.refresh}
           onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
           onFeedItemViewedCountChanged={this.props.actions.today.feedItemViewedCountChanged}
-          onCustomizeBraveNews={() => { this.openSettings(SettingsTabType.BraveNews) }}
+          onCustomizeBraveToday={() => { this.openSettings(SettingsTabType.BraveToday) }}
           onReadFeedItem={this.props.actions.today.readFeedItem}
           onPromotedItemViewed={this.props.actions.today.promotedItemViewed}
           onSetPublisherPref={this.props.actions.today.setPublisherPref}
@@ -704,7 +695,7 @@ class NewTabPage extends React.Component<Props, State> {
           getDisplayAd={this.props.getBraveNewsDisplayAd}
         />
         }
-        <Settings
+        {showStats && false && <Settings
           actions={actions}
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
@@ -739,7 +730,7 @@ class NewTabPage extends React.Component<Props, State> {
           toggleCards={this.props.saveSetAllStackWidgets}
           newTabData={this.props.newTabData}
           onEnableRewards={this.startRewards}
-        />
+        />}
         {
           showEditTopSite
             ? <EditTopSite

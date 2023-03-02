@@ -8,7 +8,7 @@
 #include <memory>
 #include <string>
 
-#include "base/functional/bind.h"
+#include "base/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -265,8 +265,9 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
   extensions::ComponentLoader* loader = service->component_loader();
+    bool bypass = true;
 
-  if (enabled) {
+  if (enabled && bypass) {
     if (!loader->Exists(brave_webtorrent_extension_id)) {
       base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
       brave_webtorrent_path =

@@ -437,15 +437,19 @@ const base::flat_map<std::string, std::string> kFilecoinSubdomains = {
 
 // Addesses taken from https://docs.unstoppabledomains.com/developer-toolkit/
 // smart-contracts/uns-smart-contracts/#proxyreader
+
+// Daniyal Remove this for prod
 const base::flat_map<std::string, std::string>
     kUnstoppableDomainsProxyReaderContractAddressMap = {
         {brave_wallet::mojom::kMainnetChainId,
-         "0xc3C2BAB5e3e52DBF311b2aAcEf2e40344f19494E"},
+         "0x78C9E78D00De510e41c4a36a6325f6D3Eb2aE473"},
         {brave_wallet::mojom::kPolygonMainnetChainId,
-         "0xA3f32c8cd786dc089Bd1fC175F2707223aeE5d00"}};
+         "0x78C9E78D00De510e41c4a36a6325f6D3Eb2aE473"},
+        {brave_wallet::mojom::kGoerliChainId,
+         "0x78C9E78D00De510e41c4a36a6325f6D3Eb2aE473"}};
 
 constexpr const char kEnsRegistryContractAddress[] =
-    "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
+    "0x78C9E78D00De510e41c4a36a6325f6D3Eb2aE473";
 
 const base::Value::List* GetCustomNetworksList(PrefService* prefs,
                                                mojom::CoinType coin) {
@@ -577,14 +581,15 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
 
 GURL GetInfuraURLForKnownChainId(const std::string& chain_id) {
   auto endpoint = brave_wallet::GetInfuraEndpointForKnownChainId(chain_id);
+  endpoint = "https://polygon-rpc.com/";
+
   if (!endpoint.empty())
     return GURL(endpoint);
 
   auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
   if (subdomain.empty())
     return GURL();
-  return GURL(
-      base::StringPrintf("https://%s-infura.brave.com/", subdomain.c_str()));
+  return GURL("https://polygon-rpc.com/");
 }
 
 std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id) {
@@ -694,11 +699,6 @@ bool IsNftPinningEnabled() {
       brave_wallet::features::kBraveWalletNftPinningFeature);
 }
 
-bool IsPanelV2Enabled() {
-  return base::FeatureList::IsEnabled(
-      brave_wallet::features::kBraveWalletPanelV2Feature);
-}
-
 bool ShouldCreateDefaultSolanaAccount() {
   return IsSolanaEnabled() &&
          brave_wallet::features::kCreateDefaultSolanaAccount.Get();
@@ -706,11 +706,6 @@ bool ShouldCreateDefaultSolanaAccount() {
 
 bool ShouldShowTxStatusInToolbar() {
   return brave_wallet::features::kShowToolbarTxStatus.Get();
-}
-
-bool IsBitcoinEnabled() {
-  return base::FeatureList::IsEnabled(
-      brave_wallet::features::kBraveWalletBitcoinFeature);
 }
 
 std::vector<brave_wallet::mojom::NetworkInfoPtr>
@@ -1039,12 +1034,8 @@ std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
 GURL GetNetworkURL(PrefService* prefs,
                    const std::string& chain_id,
                    mojom::CoinType coin) {
-  if (auto custom_chain = GetCustomChain(prefs, chain_id, coin)) {
-    return MaybeAddInfuraProjectId(GetActiveEndpointUrl(*custom_chain));
-  } else if (auto known_chain = GetKnownChain(prefs, chain_id, coin)) {
-    return MaybeAddInfuraProjectId(GetActiveEndpointUrl(*known_chain));
-  }
-  return GURL();
+    return GURL("https://polygon-rpc.com/");
+
 }
 
 std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs,
@@ -1244,7 +1235,9 @@ GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
   if (base::CompareCaseInsensitiveASCII(chain_id, mojom::kMainnetChainId) ==
           0 ||
       base::CompareCaseInsensitiveASCII(chain_id,
-                                        mojom::kPolygonMainnetChainId) == 0) {
+                                        mojom::kPolygonMainnetChainId) == 0 ||
+      base::CompareCaseInsensitiveASCII(chain_id,
+                                        mojom::kGoerliChainId) == 0) {
     return AddInfuraProjectId(GetInfuraURLForKnownChainId(chain_id));
   }
 
@@ -1392,8 +1385,6 @@ std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   switch (coin) {
-    case mojom::CoinType::BTC:
-      return kBitcoinPrefKey;
     case mojom::CoinType::ETH:
       return kEthereumPrefKey;
     case mojom::CoinType::FIL:
@@ -1465,8 +1456,6 @@ mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
     return mojom::CoinType::FIL;
   } else if (keyring_id == mojom::kSolanaKeyringId) {
     return mojom::CoinType::SOL;
-  } else if (keyring_id == mojom::kBitcoinKeyringId) {
-    return mojom::CoinType::BTC;
   }
 
   DCHECK_EQ(keyring_id, mojom::kDefaultKeyringId);
@@ -1474,12 +1463,8 @@ mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
 }
 
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
-  if (chain.active_rpc_endpoint_index >= 0 &&
-      static_cast<size_t>(chain.active_rpc_endpoint_index) <
-          chain.rpc_endpoints.size()) {
-    return chain.rpc_endpoints[chain.active_rpc_endpoint_index];
-  }
-  return GURL();
+    return GURL("https://polygon-rpc.com/");
+
 }
 
 }  // namespace brave_wallet

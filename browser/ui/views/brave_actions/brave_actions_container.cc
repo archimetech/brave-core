@@ -13,8 +13,8 @@
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -26,7 +26,6 @@
 namespace {
 
 constexpr gfx::Size kToolbarActionSize(34, 24);
-
 }  // namespace
 
 BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
@@ -79,20 +78,18 @@ bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
 }
 
 void BraveActionsContainer::AddActionViewForShields() {
+//Not to remove for Brave
   shields_action_btn_ =
       AddChildViewAt(std::make_unique<BraveShieldsActionView>(
                          browser_->profile(), browser_->tab_strip_model()),
                      1);
   shields_action_btn_->SetPreferredSize(kToolbarActionSize);
   shields_action_btn_->Init();
+
 }
 
 void BraveActionsContainer::AddActionViewForRewards() {
-  auto button = std::make_unique<BraveRewardsActionView>(browser_);
-  rewards_action_btn_ = AddChildViewAt(std::move(button), 2);
-  rewards_action_btn_->SetPreferredSize(kToolbarActionSize);
-  rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());
-  rewards_action_btn_->Update();
+
 }
 
 void BraveActionsContainer::Update() {

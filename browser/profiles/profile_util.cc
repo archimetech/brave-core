@@ -45,11 +45,7 @@ bool IsGuestProfile(content::BrowserContext* context) {
 }
 
 bool IsTorDisabledForProfile(Profile* profile) {
-#if BUILDFLAG(ENABLE_TOR)
-  return TorProfileServiceFactory::IsTorDisabled() || profile->IsGuestSession();
-#else
-  return true;
-#endif
+return profile->IsGuestSession();
 }
 
 bool IsRegularProfile(content::BrowserContext* context) {

@@ -8,7 +8,7 @@
 #include <string>
 #include <utility>
 
-#include "base/functional/bind.h"
+#include "base/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
@@ -19,7 +19,7 @@ namespace settings {
 
 namespace {
 constexpr char kBraveSearchForTorKeyword[] =
-    ":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion";
+    ":google.com";
 }  // namespace
 
 BraveSearchEnginesHandler::BraveSearchEnginesHandler(Profile* profile)

@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "base/functional/bind.h"
+#include "base/bind.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
 #include "base/memory/weak_ptr.h"
@@ -23,8 +23,8 @@
 #include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -73,7 +73,7 @@ base::Value::Dict GetStatsDictionary(PrefService* prefs) {
 base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   base::Value::Dict pref_data;
   pref_data.Set("showBackgroundImage",
-                prefs->GetBoolean(kNewTabPageShowBackgroundImage));
+                true);
   pref_data.Set(
       "brandedWallpaperOptIn",
       prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage));
@@ -85,8 +85,8 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set("showRewards", prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.Set("isBrandedWallpaperNotificationDismissed",
                 prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
-  pref_data.Set("isBraveNewsOptedIn",
-                prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
+  pref_data.Set("isBraveTodayOptedIn",
+                prefs->GetBoolean(brave_news::prefs::kBraveTodayOptedIn));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
   return pref_data;
@@ -237,10 +237,7 @@ void BraveNewTabMessageHandler::RegisterMessages() {
       "getWallpaperData",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetWallpaperData,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "customizeClicked",
-      base::BindRepeating(&BraveNewTabMessageHandler::HandleCustomizeClicked,
-                          base::Unretained(this)));
+
 }
 
 void BraveNewTabMessageHandler::OnJavascriptAllowed() {
@@ -279,7 +276,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   }
   // News
   pref_change_registrar_.Add(
-      brave_news::prefs::kBraveNewsOptedIn,
+      brave_news::prefs::kBraveTodayOptedIn,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   // New Tab Page preferences
@@ -421,8 +418,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowStats;
   } else if (settingsKeyInput == "showToday") {
     settingsKey = brave_news::prefs::kNewTabPageShowToday;
-  } else if (settingsKeyInput == "isBraveNewsOptedIn") {
-    settingsKey = brave_news::prefs::kBraveNewsOptedIn;
+  } else if (settingsKeyInput == "isBraveTodayOptedIn") {
+    settingsKey = brave_news::prefs::kBraveTodayOptedIn;
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {
@@ -462,13 +459,12 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
   }
 
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_)) {
-    const auto& arg = args[0].GetDict();
     auto* creative_instance_id =
-        arg.FindString(ntp_background_images::kCreativeInstanceIDKey);
-    auto* destination_url = arg.FindStringByDottedPath(
-        ntp_background_images::kLogoDestinationURLPath);
+        args[0].FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
+    auto* destination_url =
+        args[0].FindStringPath(ntp_background_images::kLogoDestinationURLPath);
     auto* wallpaper_id =
-        arg.FindStringByDottedPath(ntp_background_images::kWallpaperIDKey);
+        args[0].FindStringPath(ntp_background_images::kWallpaperIDKey);
 
     DCHECK(creative_instance_id);
     DCHECK(destination_url);

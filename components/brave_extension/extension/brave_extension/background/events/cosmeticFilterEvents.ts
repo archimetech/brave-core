@@ -31,11 +31,7 @@ export const applyCosmeticFilter = (host: string, selector: string) => {
 }
 
 // parent menu
-chrome.contextMenus.create({
-  title: 'Brave',
-  id: 'brave',
-  contexts: ['all']
-})
+
 chrome.contextMenus.create({
   title: getLocale('elementPickerMode'),
   id: 'elementPickerMode',
@@ -63,9 +59,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       break
     }
     case 'cosmeticFilterCreate': {
-      if (sender.origin) {
-        applyCosmeticFilter(new URL(sender.origin).host, msg.selector)
-      }
+      const { host, selector } = msg
+      applyCosmeticFilter(host, selector)
       break
     }
   }

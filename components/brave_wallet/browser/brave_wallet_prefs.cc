@@ -94,7 +94,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
   registry->RegisterStringPref(kDefaultBaseCurrency, "USD");
   registry->RegisterStringPref(kDefaultBaseCryptocurrency, "BTC");
-  registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
+  registry->RegisterBooleanPref(kShowWalletIconOnToolbar, false);
   registry->RegisterIntegerPref(
       kBraveWalletSelectedCoin,
       static_cast<int>(brave_wallet::mojom::CoinType::ETH));
@@ -114,6 +114,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
   registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
+  registry->RegisterDictionaryPref(kBraveWalletNextAssetDiscoveryFromBlocks);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
 
   // TODO(djandries): remove the following prefs at some point,

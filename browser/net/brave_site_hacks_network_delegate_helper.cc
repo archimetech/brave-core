@@ -90,6 +90,15 @@ int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
   if (ctx->request_url.has_query()) {
     ApplyPotentialQueryStringFilter(ctx);
   }
+    LOG(ERROR) << "OnBeforeURLRequest_SiteHacksWork ---- 1" << ctx->tab_url.host();
+    LOG(ERROR) << "OnBeforeURLRequest_SiteHacksWork ---- 2" << ctx->tab_origin.host();
+    
+ //SessionID session_id_ =
+    //SyncedWindowDelegateBrowserAgent::FromBrowser(browser)->GetSessionId();
+    //  LOG(ERROR) << " FormattedStringFromURL ---- " <<
+     // session_id_;LOG(ERROR) << "OnBeforeURLRequest_SiteHacksWork ---- 3" << ctx->request_identifier;
+
+
   return net::OK;
 }
 

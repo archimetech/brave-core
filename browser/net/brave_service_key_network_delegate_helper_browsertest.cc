@@ -69,7 +69,7 @@ class BraveServiceKeyNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
                        NotIncludesBraveServiceKey) {
-  GURL target = https_server().GetURL("notbrave.com", "/index.html");
+  GURL target = https_server().GetURL("nottomi.com", "/index.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_FALSE(header_result());
 

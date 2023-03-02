@@ -178,9 +178,9 @@ TEST_F(BraveWalletPermissionContextUnitTest, GetWebSitesWithPermission) {
         permissions::ContentSettingsTypeToRequestType(entry.type), origin,
         entry.address, &origin_wallet_address));
     // origin_wallet_address looks like that
-    // "https://www.brave.com__brg44hdsehzapvs8beqzvkq4egwevs3fre6ze2eno6s8/"
+    // "https://www.tomi.com__brg44hdsehzapvs8beqzvkq4egwevs3fre6ze2eno6s8/"
     // web_sites[0] looks like that
-    // "https://www.brave.com__brg44hdsehzapvs8beqzvkq4egwevs3fre6ze2eno6s8:443"
+    // "https://www.tomi.com__brg44hdsehzapvs8beqzvkq4egwevs3fre6ze2eno6s8:443"
     // That's why we are going to compare scheme, host and port if it's exist
     // in both URLs
     EXPECT_TRUE(Matches(origin_wallet_address.GetURL(), GURL(web_sites[0])));

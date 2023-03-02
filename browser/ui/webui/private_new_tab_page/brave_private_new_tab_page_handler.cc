@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/functional/bind.h"
+#include "base/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
@@ -136,7 +136,7 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
     web_contents = web_contents_;
 
   web_contents->OpenURL(content::OpenURLParams(
-      GURL("https://support.brave.com/"), content::Referrer(),
+      GURL("https://brave.com/"), content::Referrer(),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui::PageTransition::PAGE_TRANSITION_LINK, false));
 }

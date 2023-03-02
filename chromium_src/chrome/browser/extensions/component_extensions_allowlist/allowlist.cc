@@ -23,8 +23,9 @@ namespace extensions {
 
   bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
     const char* const kAllowed[] = {
-      brave_extension_id,
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+
+      brave_extension_id,
       ethereum_remote_client_extension_id,
 #endif
       brave_webtorrent_extension_id

@@ -74,7 +74,7 @@ IPFSOnboardingPage::~IPFSOnboardingPage() = default;
 void IPFSOnboardingPage::UseLocalNode() {
   controller()->GetPrefService()->SetInteger(
       kIPFSResolveMethod,
-      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
   start_time_ticks_ = base::TimeTicks::Now();
   if (!ipfs_service_->IsDaemonLaunched()) {
     ipfs_service_->LaunchDaemon(base::NullCallback());

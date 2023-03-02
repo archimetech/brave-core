@@ -115,7 +115,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   // Check additional changes.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
       browser()->profile()->GetPrefs(),
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE);
   TemplateURL brave_url(*brave_data);
 
   service->SetUserSelectedDefaultSearchProvider(&brave_url);

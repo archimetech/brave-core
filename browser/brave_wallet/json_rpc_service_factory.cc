@@ -39,9 +39,7 @@ mojo::PendingRemote<mojom::JsonRpcService> JsonRpcServiceFactory::GetForContext(
 // static
 JsonRpcService* JsonRpcServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
-  if (!IsAllowedForContext(context)) {
-    return nullptr;
-  }
+  
   return static_cast<JsonRpcService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
